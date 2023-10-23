@@ -11,19 +11,18 @@ public class AuctionView{
     JTextField initialPrice;
     JTextField amount;
 
+
     public AuctionView(){
         JFrame.setDefaultLookAndFeelDecorated( true );
 
         userWindow = new JFrame("Auction Client Program");
 
         panel = new JPanel(new GridLayout(0, 3));
-        userWindow.setContentPane(panel);
-
         panel.add();
 
 
 
-
+        userWindow.setContentPane(panel);
         userWindow.setSize( 400, 400 );
 	    userWindow.setVisible( true );
     }
