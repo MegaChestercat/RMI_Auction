@@ -20,6 +20,7 @@ public class AuctionView {
     private JTextField product;
     private JTextField initialPrice;
     private JTextField amount;
+    private JTextField desc;
     private ImageIcon winIMG;
     private JLabel pname, pPrice;
     private JScrollPane msgPanel, listScroll;
@@ -109,25 +110,31 @@ public class AuctionView {
         priTitle.setBounds(10, 30, 100, 30);
         productDetPanel.add(priTitle);
         pPrice = new JLabel("000000.00");
-        pPrice.setBounds(70, 30, 300, 30);
+        pPrice.setBounds(80, 30, 300, 30);
         productDetPanel.add(pPrice);
         offer.setBounds(10, 70, 100, 50);
         amount.setBounds(120, 70, 150, 50);
         productDetPanel.add(offer);
         productDetPanel.add(amount);
 
-        JLabel a = new JLabel("Product to offer: ");
-        JLabel b = new JLabel("Initial Price: ");
-        a.setBounds(50, 25, 100, 30);
+        JLabel a = new JLabel("Product to offer:");
+        JLabel b = new JLabel("Initial Price:");
+        a.setBounds(50, 15, 100, 30);
         rPanel.add(a);
         product = new JTextField();
-        product.setBounds(170, 25, 160, 30);
+        product.setBounds(170, 20, 160, 20);
         rPanel.add(product);
-        b.setBounds(50, 70, 100, 30);
+        b.setBounds(50, 50, 100, 30);
         rPanel.add(b);
         initialPrice = new JTextField();
-        initialPrice.setBounds(170, 70, 160, 30);
+        initialPrice.setBounds(170, 55, 160, 20);
         rPanel.add(initialPrice);
+        JLabel c = new JLabel("Description:");
+        c.setBounds(50, 80, 100, 30);
+        rPanel.add(c);
+        desc = new JTextField();
+        desc.setBounds(170, 85, 160, 20);
+        rPanel.add(desc);
         publish.setBounds(150, 120, 100, 30);
         rPanel.add(publish);
 
