@@ -14,6 +14,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionListener;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import com.formdev.flatlaf.FlatIntelliJLaf; //It is important to reference/add the flatlaf library that is located in the lib folder
+
 public class AuctionView {
     private JFrame userWindow;
     private JPanel panel, uPanel, dPanel, lPanel, mPanel, rPanel, productDetPanel, chatPanel;
@@ -31,7 +36,10 @@ public class AuctionView {
     JList<String> lista;
 
 
-    public AuctionView(){
+    public AuctionView() throws UnsupportedLookAndFeelException{
+        UIManager.setLookAndFeel(new FlatIntelliJLaf());
+        UIManager.put("TextComponent.arc", 40);
+        UIManager.put("Button.arc", 60);
         JFrame.setDefaultLookAndFeelDecorated( true );
 
         userWindow = new JFrame("Auction Client Program");
@@ -147,7 +155,7 @@ public class AuctionView {
 
 
         userWindow.setContentPane(panel);
-        winIMG = new ImageIcon("./images/chapo.png");
+        winIMG = new ImageIcon("src\\images\\icon.png");
         userWindow.setIconImage(winIMG.getImage());
         userWindow.setSize( 700, 500 );
         userWindow.setResizable(false);
