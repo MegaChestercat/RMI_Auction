@@ -1,4 +1,3 @@
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -9,9 +8,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+
+import java.awt.event.ActionListener;
+import javax.swing.event.ListSelectionListener;
 
 public class AuctionView {
     private JFrame userWindow;
@@ -22,7 +23,7 @@ public class AuctionView {
     private JTextField amount;
     private JTextField desc;
     private ImageIcon winIMG;
-    private JLabel pname, pPrice;
+    private JLabel pname, pPrice, descVal;
     private JScrollPane msgPanel, listScroll;
     private JTextArea msgArea;
     private JButton connect, exit, publish, retrieve, offer;
@@ -102,7 +103,7 @@ public class AuctionView {
         JLabel pTitle = new JLabel("Product: ");
         pTitle.setBounds(10, 5, 100, 30);
         productDetPanel.add(pTitle);
-        pname = new JLabel("sadasdassadasdassadasdas");
+        pname = new JLabel("");
         pname.setBounds(80, 5, 300, 30);
         productDetPanel.add(pname);
 
@@ -112,8 +113,14 @@ public class AuctionView {
         pPrice = new JLabel("000000.00");
         pPrice.setBounds(80, 30, 300, 30);
         productDetPanel.add(pPrice);
-        offer.setBounds(10, 70, 100, 50);
-        amount.setBounds(120, 70, 150, 50);
+        JLabel descTitle = new JLabel("Description: ");
+        descTitle.setBounds(10, 60, 100, 30);
+        descVal = new JLabel("");
+        descVal.setBounds(80, 60, 300, 30);
+        productDetPanel.add(descTitle);
+        productDetPanel.add(descVal);
+        offer.setBounds(10, 100, 100, 50);
+        amount.setBounds(120, 100, 150, 50);
         productDetPanel.add(offer);
         productDetPanel.add(amount);
 
@@ -148,5 +155,95 @@ public class AuctionView {
         userWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void asignarActionListener(ActionListener controlador) {
+
+        connect.addActionListener( controlador );
+        exit.addActionListener( controlador );
+        publish.addActionListener( controlador );
+        retrieve.addActionListener( controlador );
+        offer.addActionListener( controlador );
+    }
+
+    public void asignarListSelectionListener( ListSelectionListener controlador ) {
+
+        lista.addListSelectionListener( controlador );
+    }
+
+    public String getUsuario() {
+
+        return user.getText();
+    }
+
+    public String getProducto() {
+
+        return product.getText();
+    }
+
+    public String getDescription() {
+
+        return desc.getText();
+    }
+
+    public float getPrecioInicial() {
+
+        float resultado = 0.0f;
+
+        try {
+
+            resultado = Float.parseFloat( initialPrice.getText() );
+
+        } catch( Exception e ) {
+
+            System.out.println( "There are issues with the initial price." );
+        }
+
+        return resultado;
+    }
+
+    public void reinicializaListaProductos() {
+
+        productos.removeAllElements();
+    }
+
+    public void agregaProducto( String prod ) {
+
+        productos.addElement( prod );
+    }
+
+    public void desplegarNombre( String nombre ) {
+
+        pname.setText( nombre );
+    }
+
+    public void desplegarPrecio( String precio ) {
+
+        pPrice.setText( precio );
+    }
+
+    public void desplegarDescripcion( String desc ) {
+
+        descVal.setText( desc );
+    }
+
+    public float getMontoOfrecido() {
+
+        float resultado = 0.0f;
+
+        try {
+
+            resultado = Float.parseFloat( amount.getText() );
+
+        } catch( Exception e ) {
+
+            System.out.println( "There are issues with the amount offered." );
+        }
+
+        return resultado;
+    }
+
+    public String getProductoSeleccionado() {
+
+        return (String)lista.getSelectedValue();
+    }
 
 }
