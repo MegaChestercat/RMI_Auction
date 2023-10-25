@@ -68,6 +68,15 @@ public class Server implements Producer{
             infoProduct = (InformationProduct) productos.get(producto);
             if(infoProduct.actualizaPrecio(monto)){
                 ofertas.put(producto + comprador, new InformationOffer(comprador, producto, monto));
+                Enumeration<String> it = usuarios.keys();
+                while(it.hasMoreElements()){
+                    String key = it.nextElement();
+                    try{
+                        usuarios.get(key).update("The user " + comprador + " has made an offer of the product: " + producto + "by a value of: " + monto);
+                    }catch(Exception ex){
+                        System.out.println("Client exception: " + ex.toString());
+                    }
+                }
             }
             else{
                 try{

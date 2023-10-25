@@ -1,5 +1,4 @@
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -9,15 +8,12 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class AuctionController implements ActionListener, ListSelectionListener{
     AuctionView vista;
     Producer modelo;
     Consumer client;
     Hashtable<String, InformationProduct> listaConPrecios;
-    Timer timer;
 
     public AuctionController( AuctionView v, Producer s, Consumer c ) {
         vista = v;
@@ -32,7 +28,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
         String desc;
         float price;
 
-        if(event.getActionCommand().equals("Exit") || event.getActionCommand().equals(new WindowEvent(vista.userWindow, WindowEvent.WINDOW_CLOSING))){
+        if(event.getActionCommand().equals("Exit")){
             user = vista.getUsuario();
             try{
                 modelo.baja(client, user);
