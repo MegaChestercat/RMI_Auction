@@ -5,17 +5,19 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AuctionController implements ActionListener, ListSelectionListener{
     AuctionView vista;
     Producer modelo;
     Consumer client;
-    Hashtable<String, String> listaConPrecios;
+    Hashtable<String, InformationProduct> listaConPrecios;
+    Timer timer;
 
     public AuctionController( AuctionView v, Producer s, Consumer c ) {
         vista = v;
@@ -55,21 +57,27 @@ public class AuctionController implements ActionListener, ListSelectionListener{
             desc = vista.getDescription();
             price = vista.getPrecioInicial();
 
-            vista.showMsg("Offering the product: " + product);
+            try{
+                modelo.agregaProductoALaVenta(user, product, desc, price);
+                vista.showMsg("Offering the product: " + product);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(vista.userWindow, "Client exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
         else if(event.getActionCommand().equals("Retrieve List")){
             try{
-                Vector lista = modelo.obtieneCatalogo();
-                Enumeration it;
+                Vector<?> lista = modelo.obtieneCatalogo();
+                Enumeration<?> it;
                 InformationProduct info;
-                listaConPrecios = new Hashtable<String,String>();
+                listaConPrecios = modelo.getProductList();
                 vista.reinicializaListaProductos();
                 it = lista.elements();
                 while (it.hasMoreElements()) {
-                    info = (InformationProduct) it.nextElement();            
+                    info = (InformationProduct) it.nextElement();    
+                    /*        
                     listaConPrecios.put( info.producto,
-                                        String.valueOf(info.precioActual) );
+                                         info);*/
                     vista.agregaProducto( info.producto );
                 }
             }catch(Exception ex){
@@ -77,7 +85,14 @@ public class AuctionController implements ActionListener, ListSelectionListener{
             }
         }
         else if(event.getActionCommand().equals("Make Offer")){
-            
+            user = vista.getUsuario();
+            product = vista.getProducto();
+            price = vista.getMontoOfrecido();
+            try{
+                modelo.agregaOferta(user, product, price);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -86,8 +101,25 @@ public class AuctionController implements ActionListener, ListSelectionListener{
             JList<?> lista = (JList<?>)e.getSource();
             String item = (String)lista.getSelectedValue();
             if (item != null) {
-	        System.out.println(item);
-                String precio = (String)listaConPrecios.get(item);
+                /*
+                try{
+                    Hashtable<String, InformationProduct> productList = modelo.getProductList();
+                    String productN = productList.get(item).producto;
+                    String desc = productList.get(item).description;
+                    String precio = Float.toString(productList.get(item).precioActual);
+                    vista.desplegarNombre(productN);
+                    vista.desplegarDescripcion(desc);
+                    vista.desplegarPrecio( precio );
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                }*/
+	            //System.out.println(item);
+                
+                String productN = listaConPrecios.get(item).producto;
+                String desc = listaConPrecios.get(item).description;
+                String precio = String.valueOf(listaConPrecios.get(item).precioActual);
+                vista.desplegarNombre(productN);
+                vista.desplegarDescripcion(desc);
                 vista.desplegarPrecio( precio );
             }
         }

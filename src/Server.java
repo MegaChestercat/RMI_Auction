@@ -58,6 +58,9 @@ public class Server implements Producer{
             }
         }
     }
+    public Hashtable<String, InformationProduct> getProductList(){
+        return productos;
+    }
 
     public void agregaOferta( String comprador, String producto, float monto ) {
         if(productos.containsKey(producto)){

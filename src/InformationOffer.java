@@ -1,4 +1,6 @@
-public class InformationOffer {
+import java.io.Serializable;
+
+public class InformationOffer implements Serializable{
     String comprador;
     String producto;
     float monto;
