@@ -1,31 +1,87 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 
 public class Server implements Producer{
-    private static List<Consumer> list = new LinkedList<Consumer>();
-    public Server(){}
+    Hashtable<String, Consumer> usuarios;
+    Hashtable<String, InformationProduct> productos;
+    Hashtable<String, InformationOffer> ofertas;
+    public Server(){
+        usuarios = new Hashtable<String, Consumer>();
+        productos = new Hashtable<String, InformationProduct>();
+        ofertas = new Hashtable<String, InformationOffer>();
+    }
 
-    public void registro(Consumer o, String u, AuctionView v){
-        list.add(o);
-        for(Consumer e: list){
+    public void registro(Consumer o, String u){
+        usuarios.put(u, o);
+        Enumeration<String> it = usuarios.keys();
+        while(it.hasMoreElements()){
+            String key = it.nextElement();
             try{
-                e.update("The user " + u + "has just connected.", v);
+                usuarios.get(key).update("The user " + u + " has just connected.");
             }catch(Exception ex){
-                list.remove(e);
-                JOptionPane.showMessageDialog(v.userWindow, "Client exception: " + e.toString(), "Erase Client", JOptionPane.ERROR_MESSAGE);
+                usuarios.remove(u, o);
+                System.out.println("Client exception: " + ex.toString());
             }
         }
     }
 
-    public Vector obtieneCatalogo(){
-
+    public void baja(Consumer o, String u){
+        usuarios.remove(u, o);
+        Enumeration<String> it = usuarios.keys();
+        while(it.hasMoreElements()){
+            String key = it.nextElement();
+            try{
+            usuarios.get(key).update("The user " + u + " has disconnected.");
+           }catch(Exception ex){
+             usuarios.remove(u, o);
+            System.out.println("Client exception: " + ex.toString());
+           }
+        }
     }
+
+    public void agregaProductoALaVenta(String user, String product, String desc, float price){
+        if(!productos.containsKey(product)){
+            productos.put(product, new InformationProduct(user, product, desc, price));
+            Enumeration<String> it = usuarios.keys();
+            while(it.hasMoreElements()){
+                String key = it.nextElement();
+                try{
+                    usuarios.get(key).update("The user " + user + " has published a new product in auction: " + product);
+                }catch(Exception ex){
+                    System.out.println("Client exception: " + ex.toString());
+                }
+            }
+        }
+    }
+
+    public void agregaOferta( String comprador, String producto, float monto ) {
+        if(productos.containsKey(producto)){
+            InformationProduct infoProduct;
+            infoProduct = (InformationProduct) productos.get(producto);
+            if(infoProduct.actualizaPrecio(monto)){
+                ofertas.put(producto + comprador, new InformationOffer(comprador, producto, monto));
+            }
+            else{
+                try{
+                    usuarios.get(comprador).alert("La cantidad a ofrecer es menor a la cantidad actual del producto en la subasta");
+                }catch(Exception ex){
+                    System.out.println("Client exception: " + ex.toString());
+                }
+                
+            }
+        }
+    }
+
+    public Vector<InformationProduct> obtieneCatalogo(){
+        Vector<InformationProduct> result = new Vector<InformationProduct>(productos.values());
+        return result;
+    }
+    
     public static void main(String[] args){
         try{
             Server obj = new Server();

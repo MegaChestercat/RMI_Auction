@@ -19,7 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.formdev.flatlaf.FlatIntelliJLaf; //It is important to reference/add the flatlaf library that is located in the lib folder
 
-public class AuctionView {
+public class AuctionView{
     JFrame userWindow;
     private JPanel panel, uPanel, dPanel, lPanel, mPanel, rPanel, productDetPanel, chatPanel;
     private JTextField user;
@@ -55,6 +55,7 @@ public class AuctionView {
         productDetPanel = new JPanel(null);
         chatPanel = new JPanel(null);
         msgArea = new JTextArea();
+        msgArea.setEditable(true);
         msgPanel = new JScrollPane(msgArea);
 
         lPanel = new JPanel(null);
@@ -224,7 +225,7 @@ public class AuctionView {
     }
 
     public void showMsg(String msg){
-        msgArea.setText("\n" + msg);
+        msgArea.append(msg + "\n");
     }
 
     public void desplegarPrecio( String precio ) {

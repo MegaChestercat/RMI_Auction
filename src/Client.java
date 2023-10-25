@@ -7,15 +7,18 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Client implements Consumer{
     private Client(){}
-
-    public void update(String mensaje, AuctionView gui){
-		gui.showMsg(mensaje);
+    static AuctionView view;
+    public void update(String mensaje){
+		view.showMsg(mensaje);
 	}
+
+    public void alert(String mensaje){
+        JOptionPane.showMessageDialog(view.userWindow, mensaje, "Warning", JOptionPane.INFORMATION_MESSAGE );
+    }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException{
 
         String host = (args.length < 1) ? null : args[0];
-        AuctionView view;
         AuctionController controller;
         view = new AuctionView();
         try{
