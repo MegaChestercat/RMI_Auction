@@ -14,6 +14,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
     Producer modelo;
     Consumer client;
     Hashtable<String, InformationProduct> listaConPrecios;
+    String productN;
 
     public AuctionController( AuctionView v, Producer s, Consumer c ) {
         vista = v;
@@ -82,7 +83,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
         }
         else if(event.getActionCommand().equals("Make Offer")){
             user = vista.getUsuario();
-            product = vista.getProducto();
+            product = productN;
             price = vista.getMontoOfrecido();
             try{
                 modelo.agregaOferta(user, product, price);
@@ -111,7 +112,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
                 }*/
 	            //System.out.println(item);
                 
-                String productN = listaConPrecios.get(item).producto;
+                productN = listaConPrecios.get(item).producto;
                 String desc = listaConPrecios.get(item).description;
                 String precio = String.valueOf(listaConPrecios.get(item).precioActual);
                 vista.desplegarNombre(productN);
