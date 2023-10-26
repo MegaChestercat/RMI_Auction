@@ -15,6 +15,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
     Consumer client;
     Hashtable<String, InformationProduct> listaConPrecios;
     String productN;
+    String item;
 
     public AuctionController( AuctionView v, Producer s, Consumer c ) {
         vista = v;
@@ -91,12 +92,25 @@ public class AuctionController implements ActionListener, ListSelectionListener{
                 JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+        else if(event.getSource() == vista.refreshBtn){
+            try{
+                listaConPrecios = modelo.getProductList();
+                productN = listaConPrecios.get(item).producto;
+                String descr = listaConPrecios.get(item).description;
+                String precio = String.valueOf(listaConPrecios.get(item).precioActual);
+                vista.desplegarNombre(productN);
+                vista.desplegarDescripcion(descr);
+                vista.desplegarPrecio( precio );
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public void valueChanged(ListSelectionEvent e){
         if(e.getValueIsAdjusting() == false){
             JList<?> lista = (JList<?>)e.getSource();
-            String item = (String)lista.getSelectedValue();
+            item = (String)lista.getSelectedValue();
             if (item != null) {
                 /*
                 try{

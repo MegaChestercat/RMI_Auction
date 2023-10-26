@@ -1,3 +1,4 @@
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -32,6 +33,7 @@ public class AuctionView{
     private JScrollPane msgPanel, listScroll;
     private JTextArea msgArea;
     private JButton connect, exit, publish, retrieve, offer;
+    JButton refreshBtn;
     DefaultComboBoxModel<String> productos;
     JList<String> lista;
 
@@ -109,6 +111,14 @@ public class AuctionView{
         chatPanel.add(notTitle);
         chatPanel.add(msgPanel);
 
+        refreshBtn = new JButton("");
+        refreshBtn.setIcon(new ImageIcon("src\\images\\refresh.png"));
+        refreshBtn.setBorder(BorderFactory.createEmptyBorder());
+        refreshBtn.setContentAreaFilled(false);
+        refreshBtn.setFocusable(false);
+        refreshBtn.setBounds(240, 5, 24, 24);
+        productDetPanel.add(refreshBtn);
+
         JLabel pTitle = new JLabel("Product: ");
         pTitle.setBounds(10, 5, 100, 30);
         productDetPanel.add(pTitle);
@@ -171,6 +181,7 @@ public class AuctionView{
         publish.addActionListener( controlador );
         retrieve.addActionListener( controlador );
         offer.addActionListener( controlador );
+        refreshBtn.addActionListener(controlador);
     }
 
     public void asignarListSelectionListener( ListSelectionListener controlador ) {
