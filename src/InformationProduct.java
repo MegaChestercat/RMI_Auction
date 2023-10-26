@@ -4,16 +4,18 @@ public class InformationProduct implements Serializable{
     String vendedor;
     String producto;
     String description;
+    String dueDate;
     float precioInicial;
     float precioActual;
 
-    public InformationProduct( String v, String p, String desc, float price ) {
+    public InformationProduct( String v, String p, String desc, float price, String dateT ) {
 
         vendedor = v;
         producto = p;
         description = desc;
         precioInicial = price;
         precioActual = price;
+        dueDate = dateT;
     }
 
     public boolean actualizaPrecio( float monto ) {
@@ -35,8 +37,13 @@ public class InformationProduct implements Serializable{
         return precioActual;
     }
 
-     public String getDescription() {
+    public String getDescription() {
 
         return description;
+    }
+
+    public String getDueDate() {
+
+        return dueDate;
     }
 }

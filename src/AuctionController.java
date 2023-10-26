@@ -1,4 +1,6 @@
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -16,6 +18,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
     Hashtable<String, InformationProduct> listaConPrecios;
     String productN;
     String item;
+    String dueDate;
 
     public AuctionController( AuctionView v, Producer s, Consumer c ) {
         vista = v;
@@ -28,6 +31,7 @@ public class AuctionController implements ActionListener, ListSelectionListener{
         String user;
         String product;
         String desc;
+        String dateT;
         float price;
 
         if(event.getActionCommand().equals("Exit")){
@@ -54,9 +58,10 @@ public class AuctionController implements ActionListener, ListSelectionListener{
             product = vista.getProducto();
             desc = vista.getDescription();
             price = vista.getPrecioInicial();
+            dueDate = vista.getDueDate();
 
             try{
-                modelo.agregaProductoALaVenta(user, product, desc, price);
+                modelo.agregaProductoALaVenta(user, product, desc, price, dueDate);
                 vista.showMsg("Offering the product: " + product);
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(vista.userWindow, "Client exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -73,9 +78,6 @@ public class AuctionController implements ActionListener, ListSelectionListener{
                 it = lista.elements();
                 while (it.hasMoreElements()) {
                     info = (InformationProduct) it.nextElement();    
-                    /*        
-                    listaConPrecios.put( info.producto,
-                                         info);*/
                     vista.agregaProducto( info.producto );
                 }
             }catch(Exception ex){
@@ -86,8 +88,30 @@ public class AuctionController implements ActionListener, ListSelectionListener{
             user = vista.getUsuario();
             product = productN;
             price = vista.getMontoOfrecido();
+            dateT  = dueDate; 
             try{
-                modelo.agregaOferta(user, product, price);
+                DateTimeFormatter f1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                if(f1.format(LocalDateTime.now()).compareTo(String.valueOf(dateT)) >= 0){
+                    try{
+                        Vector<?> lista = modelo.obtieneCantidades();
+                        Enumeration<?> it;
+                        it = lista.elements();
+                        InformationOffer info;
+                        String winnerBid = Float.toString(listaConPrecios.get(product).precioActual);
+                        while(it.hasMoreElements()){
+                            info = (InformationOffer) it.nextElement();
+                            if(Float.toString(info.monto) == winnerBid){
+                                JOptionPane.showMessageDialog(vista.userWindow, "The auction of this product has finished.\nProduct: " + info.producto + "\nBidder Username: " + info.comprador + "\nBid: " + info.monto + "\nBid DateTime: " + info.offerDateTime, "Product Auction Ended", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                        
+                    }catch(Exception ex){
+                        JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    modelo.agregaOferta(user, product, price, f1.format(LocalDateTime.now()));
+                }
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -95,12 +119,14 @@ public class AuctionController implements ActionListener, ListSelectionListener{
         else if(event.getSource() == vista.refreshBtn){
             try{
                 listaConPrecios = modelo.getProductList();
+                dueDate = listaConPrecios.get(item).dueDate;
                 productN = listaConPrecios.get(item).producto;
                 String descr = listaConPrecios.get(item).description;
                 String precio = String.valueOf(listaConPrecios.get(item).precioActual);
                 vista.desplegarNombre(productN);
                 vista.desplegarDescripcion(descr);
                 vista.desplegarPrecio( precio );
+                vista.desplegarDueDateTime(dueDate);
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -125,13 +151,14 @@ public class AuctionController implements ActionListener, ListSelectionListener{
                     JOptionPane.showMessageDialog(vista.userWindow, "Exception: " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 }*/
 	            //System.out.println(item);
-                
+                dueDate = listaConPrecios.get(item).dueDate;
                 productN = listaConPrecios.get(item).producto;
                 String desc = listaConPrecios.get(item).description;
                 String precio = String.valueOf(listaConPrecios.get(item).precioActual);
                 vista.desplegarNombre(productN);
                 vista.desplegarDescripcion(desc);
                 vista.desplegarPrecio( precio );
+                vista.desplegarDueDateTime(dueDate);
             }
         }
     }

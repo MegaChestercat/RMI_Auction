@@ -44,9 +44,9 @@ public class Server implements Producer{
         }
     }
 
-    public void agregaProductoALaVenta(String user, String product, String desc, float price){
+    public void agregaProductoALaVenta(String user, String product, String desc, float price, String dateT){
         if(!productos.containsKey(product)){
-            productos.put(product, new InformationProduct(user, product, desc, price));
+            productos.put(product, new InformationProduct(user, product, desc, price, dateT));
             Enumeration<String> it = usuarios.keys();
             while(it.hasMoreElements()){
                 String key = it.nextElement();
@@ -62,12 +62,12 @@ public class Server implements Producer{
         return productos;
     }
 
-    public void agregaOferta( String comprador, String producto, float monto ) {
+    public void agregaOferta( String comprador, String producto, float monto, String offerDateTime ) {
         if(productos.containsKey(producto)){
             InformationProduct infoProduct;
             infoProduct = (InformationProduct) productos.get(producto);
             if(infoProduct.actualizaPrecio(monto)){
-                ofertas.put(producto + comprador, new InformationOffer(comprador, producto, monto));
+                ofertas.put(producto + "-" + comprador + "-" + offerDateTime, new InformationOffer(comprador, producto, monto, offerDateTime));
                 Enumeration<String> it = usuarios.keys();
                 while(it.hasMoreElements()){
                     String key = it.nextElement();
@@ -91,6 +91,11 @@ public class Server implements Producer{
 
     public Vector<InformationProduct> obtieneCatalogo(){
         Vector<InformationProduct> result = new Vector<InformationProduct>(productos.values());
+        return result;
+    }
+
+    public Vector<InformationOffer> obtieneCantidades(){
+        Vector<InformationOffer> result = new Vector<InformationOffer>(ofertas.values());
         return result;
     }
     

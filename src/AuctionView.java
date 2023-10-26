@@ -28,8 +28,9 @@ public class AuctionView{
     private JTextField initialPrice;
     private JTextField amount;
     private JTextField desc;
+    private JTextField dateTime;
     private ImageIcon winIMG;
-    private JLabel pname, pPrice, descVal;
+    private JLabel pname, pPrice, descVal, dueDate;
     private JScrollPane msgPanel, listScroll;
     private JTextArea msgArea;
     private JButton connect, exit, publish, retrieve, offer;
@@ -133,11 +134,17 @@ public class AuctionView{
         pPrice.setBounds(80, 30, 300, 30);
         productDetPanel.add(pPrice);
         JLabel descTitle = new JLabel("Description: ");
-        descTitle.setBounds(10, 60, 100, 30);
+        descTitle.setBounds(10, 50, 100, 30);
         descVal = new JLabel("");
-        descVal.setBounds(80, 60, 300, 30);
+        descVal.setBounds(80, 50, 300, 30);
         productDetPanel.add(descTitle);
         productDetPanel.add(descVal);
+        JLabel dTitle = new JLabel("Due DateTime: ");
+        dTitle.setBounds(10, 70, 100, 30);
+        dueDate = new JLabel("yyyy/MM/dd HH:mm");
+        dueDate.setBounds(100, 70, 150, 30);
+        productDetPanel.add(dTitle);
+        productDetPanel.add(dueDate);
         offer.setBounds(10, 100, 100, 50);
         amount.setBounds(120, 100, 150, 50);
         productDetPanel.add(offer);
@@ -148,20 +155,27 @@ public class AuctionView{
         a.setBounds(50, 15, 100, 30);
         rPanel.add(a);
         product = new JTextField();
-        product.setBounds(170, 20, 160, 20);
+        product.setBounds(170, 20, 160, 30);
         rPanel.add(product);
         b.setBounds(50, 50, 100, 30);
         rPanel.add(b);
         initialPrice = new JTextField();
-        initialPrice.setBounds(170, 55, 160, 20);
+        initialPrice.setBounds(170, 55, 160, 30);
         rPanel.add(initialPrice);
         JLabel c = new JLabel("Description:");
         c.setBounds(50, 80, 100, 30);
         rPanel.add(c);
         desc = new JTextField();
-        desc.setBounds(170, 85, 160, 20);
+        desc.setBounds(170, 85, 160, 30);
         rPanel.add(desc);
-        publish.setBounds(150, 120, 100, 30);
+        JLabel d = new JLabel("Due DateTime:");
+        d.setBounds(50, 100, 100, 30);
+        rPanel.add(d);
+        dateTime = new JTextField();
+        dateTime.setBounds(40, 123, 100, 30);
+        dateTime.setText("yyyy/MM/dd HH:mm");
+        rPanel.add(dateTime);
+        publish.setBounds(200, 120, 100, 30);
         rPanel.add(publish);
 
 
@@ -171,7 +185,7 @@ public class AuctionView{
         userWindow.setSize( 700, 500 );
         userWindow.setResizable(false);
 	    userWindow.setVisible( true );
-        userWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        userWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     public void asignarActionListener(ActionListener controlador) {
@@ -192,6 +206,11 @@ public class AuctionView{
     public String getUsuario() {
 
         return user.getText();
+    }
+
+    public String getDueDate() {
+
+        return dateTime.getText();
     }
 
     public String getProducto() {
@@ -247,6 +266,11 @@ public class AuctionView{
     public void desplegarDescripcion( String desc ) {
 
         descVal.setText( desc );
+    }
+
+    public void desplegarDueDateTime( String due ) {
+
+        dueDate.setText( due );
     }
 
     public float getMontoOfrecido() {
