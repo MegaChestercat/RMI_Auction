@@ -97,11 +97,12 @@ public class AuctionController implements ActionListener, ListSelectionListener{
                         Enumeration<?> it;
                         it = lista.elements();
                         InformationOffer info;
-                        String winnerBid = Float.toString(listaConPrecios.get(product).precioActual);
+                        listaConPrecios = modelo.getProductList();
+                        Float winnerBid = listaConPrecios.get(product).precioActual;
                         while(it.hasMoreElements()){
                             info = (InformationOffer) it.nextElement();
-                            if(Float.toString(info.monto) == winnerBid){
-                                JOptionPane.showMessageDialog(vista.userWindow, "The auction of this product has finished.\nProduct: " + info.producto + "\nBidder Username: " + info.comprador + "\nBid: " + info.monto + "\nBid DateTime: " + info.offerDateTime, "Product Auction Ended", JOptionPane.INFORMATION_MESSAGE);
+                            if(info.monto == winnerBid){
+                                JOptionPane.showMessageDialog(vista.userWindow, "The auction of this product has finished.\nProduct: " + info.producto + "\nBidder Username: " + info.comprador + "\nBid: " + info.monto + "\nBid DateTime: " + info.offerDateTime, "Product Auction Finished", JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
                         
