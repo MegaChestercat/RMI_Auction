@@ -2,7 +2,7 @@ Para compilar ambos programas es importante que el siguiente comando se ejecute 
 
 javac -cp lib\flatlaf-3.2.5.jar; -d . src\*.java
 
-Subsecuentemenete en esa misma venta de terminal se procede a ejecutar el siguiente comando para habilitar el Registro de servicios de Java:
+Subsecuentemente en esa misma venta de terminal se procede a ejecutar el siguiente comando para habilitar el Registro de servicios de Java:
 
 rmiregistry
 
