@@ -1,0 +1,15 @@
+Para compilar ambos programas es importante que el siguiente comando se ejecute en la raíz del proyecto:
+
+javac -cp lib\flatlaf-3.2.5.jar; -d . src\*.java
+
+Subsecuentemenete en esa misma venta de terminal se procede a ejecutar el siguiente comando para habilitar el Registro de servicios de Java:
+
+rmiregistry
+
+En otra ventana de terminal ubicada en la raíz del proyecto se procede a ejecutar el siguiente comando para inicializar el programa Server:
+
+java Server
+
+En otra ventana de terminal ubicada en la raíz del proyecto se procede a ejecutar el siguiente comando para inicializar el programa Client:
+
+java -cp lib\flatlaf-3.2.5.jar; Client
